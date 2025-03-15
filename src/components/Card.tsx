@@ -23,12 +23,15 @@ export default function Productcard({ venueName, imgSrc, onCompare} : {venueName
                 name={`${venueName} Rating`}
                 data-testid={`${venueName} Rating`}
                 value={value}
+                onClick={(e) => e.stopPropagation()}
                 onChange={(event, newValue) => {
                     if (newValue==null) newValue=0;
                     setValue(newValue);
                     onCompare(venueName, newValue);
                 }}
             />
+            
+            
         </InteractiveCard>
     );
 }

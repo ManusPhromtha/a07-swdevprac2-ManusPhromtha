@@ -1,6 +1,7 @@
 'use client'
 import { useReducer } from "react";
 import Card from './Card'
+import Link from "next/link";
 
 export default function CardPanel() {
     const compareReducer = ( compareList:Map<string,number>, action:{type:string, venueName:string, score:number})=>{
@@ -19,12 +20,26 @@ export default function CardPanel() {
 
     const [ compareList, dispatchCompare ] = useReducer( compareReducer, new Map<string,number>())
 
+    /**
+     * Mock Data for Demontration Only
+     */
+    const mockVenueRepo = [
+        {vid: "001", name: "The Bloom Pavilion", image: "/img/bloom.jpg"},
+        {vid: "002", name: "Spark Space", image: "/img/sparkspace.jpg"},
+        {vid: "003", name: "The Grand Table", image: "/img/grandtable.jpg"}
+    ]
+
     return(
         <div>
             <div style={{margin:"20px", display:"flex", justifyContent:"space-around", flexWrap:"wrap", padding:"10px"}}>
-                <Card venueName='The Bloom Pavilion' imgSrc='/img/bloom.jpg' onCompare={(card:string, value:number)=>dispatchCompare({type:'add', venueName:card, score:value})}/>
-                <Card venueName='Spark Space' imgSrc='/img/sparkspace.jpg' onCompare={(card:string, value:number)=>dispatchCompare({type:'add', venueName:card, score:value})}/>
-                <Card venueName='The Grand Table' imgSrc='/img/grandtable.jpg' onCompare={(card:string, value:number)=>dispatchCompare({type:'add', venueName:card, score:value})}/>
+                {
+                    mockVenueRepo.map((venueItem)=> (
+                        <Link href={`/venue/${venueItem.vid}` } className="w-1/5">
+                            <Card venueName={venueItem.name} imgSrc={venueItem.image} onCompare={(card:string, value:number)=>dispatchCompare({type:'add', venueName:card, score:value})}/>
+                        </Link>
+                    ))
+                }
+                
             </div>
 
             <div>Compare List: {compareList.size}</div>
